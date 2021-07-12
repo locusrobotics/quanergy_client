@@ -194,6 +194,11 @@ namespace quanergy
       connections.push_back(cartesian_converter.connect(
           [this](const quanergy::client::PolarToCartConverter::ResultType& pc){ async.slot(pc); }
       ));
+
+      // also make the polar-frame data available to downstream worker threads
+      connections.push_back(ring_intensity_filter.connect(
+          [this](const quanergy::client::RingIntensityFilter::ResultType& pc)){ async.slot(pc); }
+      ));
     }
 
     SensorPipeline::~SensorPipeline()
