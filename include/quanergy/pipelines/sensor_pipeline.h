@@ -27,7 +27,7 @@
 // module to apply encoder correction
 #include <quanergy/modules/encoder_angle_calibration.h>
 
-// cloud_async module for multithreading
+// async module for multithreading
 #include <quanergy/pipelines/async.h>
 
 // for setting file
@@ -74,7 +74,7 @@ namespace quanergy
       quanergy::client::RingIntensityFilter ring_intensity_filter;
       // polar to cart converter; converts from the polar PCL cloud to a Cartesian one
       quanergy::client::PolarToCartConverter cartesian_converter;
-      // cloud_async module to put the processing of the output cloud on a separate thread
+      // async modules to put the processing of the output cloud on a separate thread
       using CloudAsyncType = quanergy::pipeline::AsyncModule<boost::shared_ptr<pcl::PointCloud<quanergy::PointXYZIR>>>;
       CloudAsyncType cloud_async;
 
