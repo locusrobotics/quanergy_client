@@ -192,12 +192,12 @@ namespace quanergy
 
       // connect to an async module so downstream work happens on a separate thread
       connections.push_back(cartesian_converter.connect(
-          [this](const quanergy::client::PolarToCartConverter::ResultType& pc){ async.slot(pc); }
+          [this](const quanergy::client::PolarToCartConverter::ResultType& pc){ cloud_async.slot(pc); }
       ));
 
       // also make the polar-frame data available to downstream worker threads
       connections.push_back(ring_intensity_filter.connect(
-          [this](const quanergy::client::RingIntensityFilter::ResultType& pc)){ async.slot(pc); }
+          [this](const quanergy::client::RingIntensityFilter::ResultType& pc){ scan_async.slot(pc); }
       ));
     }
 

@@ -27,7 +27,7 @@
 // module to apply encoder correction
 #include <quanergy/modules/encoder_angle_calibration.h>
 
-// async module for multithreading
+// cloud_async module for multithreading
 #include <quanergy/pipelines/async.h>
 
 // for setting file
@@ -74,9 +74,12 @@ namespace quanergy
       quanergy::client::RingIntensityFilter ring_intensity_filter;
       // polar to cart converter; converts from the polar PCL cloud to a Cartesian one
       quanergy::client::PolarToCartConverter cartesian_converter;
-      // async module to put the processing of the output cloud on a separate thread
-      using AsyncType = quanergy::pipeline::AsyncModule<boost::shared_ptr<pcl::PointCloud<quanergy::PointXYZIR>>>;
-      AsyncType async;
+      // cloud_async module to put the processing of the output cloud on a separate thread
+      using CloudAsyncType = quanergy::pipeline::AsyncModule<boost::shared_ptr<pcl::PointCloud<quanergy::PointXYZIR>>>;
+      CloudAsyncType cloud_async;
+
+      using ScanAsyncType = quanergy::pipeline::AsyncModule<boost::shared_ptr<pcl::PointCloud<quanergy::PointHVDIR>>>;
+      ScanAsyncType scan_async;
 
 
       // vector to hold connections for better cleanup
@@ -103,10 +106,21 @@ namespace quanergy
        *         const boost::shared_ptr<pcl::PointCloud<quanergy::PointXYZIR>>&
        *  \returns connection object created
        */
-      boost::signals2::connection connect(
-          const typename AsyncType::Signal::slot_type& subscriber)
+      boost::signals2::connection connect_cloud(
+          const typename CloudAsyncType::Signal::slot_type& subscriber)
       {
-        return async.connect(subscriber);
+        return cloud_async.connect(subscriber);
+      }
+
+      /** \brief connect is just a convenience calling the ring intensity filter's connect method
+       *  \param subscriber is the slot to call; it is a function consuming
+       *         const boost::shared_ptr<pcl::PointCloud<quanergy::PointHVDIR>>&
+       *  \returns connection object created
+       */
+      boost::signals2::connection connect_scan(
+          const typename ScanAsyncType::Signal::slot_type& subscriber)
+      {
+        return scan_async.connect(subscriber);
       }
     };
   }
