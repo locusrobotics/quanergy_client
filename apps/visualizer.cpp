@@ -169,7 +169,7 @@ int main(int argc, char** argv)
   /// connect application specific logic here to consume the point cloud
   ////////////////////////////////////////////
   // connect the pipeline to the visualizer
-  connections.push_back(pipeline->connect(
+  connections.push_back(pipeline->connect_cloud(
       [&visualizer](const boost::shared_ptr<pcl::PointCloud<quanergy::PointXYZIR>>& pc){ visualizer->slot(pc); }
   ));
 

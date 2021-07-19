@@ -7,7 +7,8 @@ set(QUANERGY_CLIENT_VERSION "4.1.2")
 #required to prevent macro definition of min and max in windows
 add_definitions(-DNOMINMAX)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 option(NoViz "Do not build visualizer" OFF)
 
